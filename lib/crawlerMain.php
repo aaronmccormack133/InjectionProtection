@@ -1,8 +1,7 @@
 <?php
 
-//Couple changes need ot be made.
+//Couple changes need to be made.
 //user input for the crawler.
-//needs to stop after a certain point
 //exclude certain links
 //traverse websites method should be altered.
 //trimming titles etc.
@@ -11,7 +10,7 @@
 
 //url of the page being tested. 
 //this will be changed to the input url of the customers website.
-$start = "https://metal-archives.com";
+$start = "https://www.burritos.ie/";
 
 $already_crawled = array();
 $crawling = array();
@@ -42,14 +41,9 @@ function get_details($url){
             $keywords = $meta->getAttribute("content");
         
     }
-    //return '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},';
     global $crawlResult;
-    $crawlResult = array(
-        'Title' => $title,
-        'Description' => $description,
-        'Keywords' => $keywords,
-        'Url' => $url);
-    
+    $crawlResult = "Title: ".$title."Description: ".$description."Keywords: ".$keywords."URL: ".$url;
+    return $crawlResult;
 }
 
 function follow_links($url){
@@ -67,6 +61,7 @@ function follow_links($url){
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
+	$inputList = $doc->getElementsByTagName("input");
 
     foreach($linkList as $link){
         //getting the links attached to the a tags
@@ -105,8 +100,7 @@ function follow_links($url){
             $crawlExport = json_encode($crawlResult);
             
             //test to see if the file would write properly
-            if(file_put_contents("jacktest.json", $crawlExport, FILE_APPEND)){
-                //echo "Json file created successfully". PHP_EOL;
+            if(file_put_contents("lib/crawlResults.json", $crawlExport, FILE_APPEND)){
                 $fileCreated = true;
             }
             else{
@@ -115,13 +109,26 @@ function follow_links($url){
             //echo $l."\n";
         }
     }
-    if($fileCreated){
+    if($fileCreated = true){
         echo "Json file created successfully".PHP_EOL;
+		exit;
         //the file is finished writing successfully.
     }
     array_shift($crawling);
     foreach($crawling as $site){
-        follow_links($site);
+		/*
+		if($site.parse_url($url)["host"] == $already_crawled.parse_url($url)["host"]){
+        	follow_links($site);
+		}
+		else{
+			break;
+		}
+        /*
+        if($site.parse_url($url)["host"] != $already_crawled.parse_url($url)["host"][-1]){
+        	break;
+        }
+        */
+		follow_links($site);
     }
 }
 
