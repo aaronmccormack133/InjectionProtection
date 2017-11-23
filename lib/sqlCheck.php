@@ -1,7 +1,8 @@
 <?php
 $ch = curl_init();
 
-$startUrl = "http://alphaonenow.org/info.php?id=13";
+//find link to test the script in the drive
+$startUrl = "";
 //add in a ' to the quotations in the append url bit. 
 $appendUrl = $startUrl."'";
 
@@ -17,18 +18,11 @@ $data = curl_exec($ch);
 if($data === FALSE){
 	echo "curl error " . curl_error($ch);
 }
-/*
-$errorCheck = strpos($text, "SQL");
 
-if ($errorCheck==false){
-    echo "no";
-}
-else{
-    echo "<br>SQL ERROR FOUND :D";
-}
- */
+#keywords found on sqlmap github account: https://github.com/sqlmapproject/sqlmap/blob/afc2a42383c48e7209c3dbff23a5eb05333b485e/xml/errors.xml
 global $mySqlDB;
-$mySqlArr = array("SQL", 
+$mySqlDB = array("SQL",
+	"SQL syntax.*?MySQL",
     "Warning.*?mysql_", 
     "MySqlException \(0x", 
     "valid MySql result", 
@@ -141,39 +135,32 @@ $hsqlDB = array("org\.hsqldb\.jdbc",
 	"Unexpected token.*?in statement \["
 );
 
-function checkingPage($haystack, $needle){
-    if(is_array($needle)){
-        foreach($needle as $pin){
-            if(is_array($pin)){
-                return strpos($haystack, $pin) !== false;
-            }
-            else{
-                $pos = strpos($haystack, $pin);
-				return $pos;
-            }
-        }
-    }
-    else{
-        return strpos($haystack, $needle);
-    }
-}
-
 function sqlCheck($page, $sqlArray){
 	foreach($sqlArray as $elem){
 		$result = strpos($page, $elem);
 		if($result == false){
-			echo "Page is not vulnerable";
+			echo "Page is not vulnerable\n";
 		}
 		else{
-			echo "Page is ".$sqlArray." vulnerable";
+			echo "Page is vulnerable\n";
+			exit;
 		}
 	}
 }
 
 sqlCheck($data, $mySqlDB);
+sqlCheck($data, $postgreSQLDB);
+sqlCheck($data, $msSqlServerDB);
+sqlCheck($data, $msAccessDB);
+sqlCheck($data, $oracleDB);
+sqlCheck($data, $ibmDB2);
+sqlCheck($data, $informixDB);
+sqlCheck($data, $firebirdDB);
+sqlCheck($data, $SQLiteDB);
+sqlCheck($data, $SAPMaxDB);
+sqlCheck($data, $sybaseDB);
+sqlCheck($data, $ingresDB);
+sqlCheck($data, $frontbaseDB);
+sqlCheck($data, $hsqlDB);
 
-
-
-#https://stackoverflow.com/questions/9576772/check-if-string-exists-in-a-web-page
-#code^^^
 ?>
