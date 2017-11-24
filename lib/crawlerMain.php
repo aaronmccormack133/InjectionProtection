@@ -42,7 +42,7 @@ function get_details($url){
         
     }
     global $crawlResult;
-    $crawlResult = "Title: ".$title."Description: ".$description."Keywords: ".$keywords."URL: ".$url;
+  	$crawlResult =  '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},';
     return $crawlResult;
 }
 
@@ -61,7 +61,6 @@ function follow_links($url){
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
-	$inputList = $doc->getElementsByTagName("input");
 
     foreach($linkList as $link){
         //getting the links attached to the a tags
@@ -97,10 +96,10 @@ function follow_links($url){
             echo get_details($l)."\n";
 
             global $crawlResult;
-            $crawlExport = json_encode($crawlResult);
+            //$crawlExport = json_encode($crawlResult);
             
             //test to see if the file would write properly
-            if(file_put_contents("lib/crawlResults.json", $crawlExport, FILE_APPEND)){
+            if(file_put_contents("lib/crawlResults.json", $crawlResult, FILE_APPEND)){
                 $fileCreated = true;
             }
             else{
@@ -133,6 +132,4 @@ function follow_links($url){
 }
 
 follow_links($start);
-
-print_r($already_crawled);
 ?>
