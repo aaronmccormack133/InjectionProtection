@@ -24,7 +24,7 @@ function get_details($url){
     @$doc->loadHTML(@file_get_contents($url, false, $context));
 
     $title = $doc->getElementsByTagName("title");
-    $title = $title->item(0)->nodeValue;
+    @$title = $title->item(0)->nodeValue;
 
     //echo $title."\n";
 
