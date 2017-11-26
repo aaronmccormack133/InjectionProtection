@@ -61,7 +61,7 @@ function follow_links($url){
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
-	$inputList = $doc->getElementsByTagName("input");
+    $inputList = $doc->getElementsByTagName("input");
 
     foreach($linkList as $link){
         //getting the links attached to the a tags
@@ -112,12 +112,12 @@ function follow_links($url){
     }
     if($fileCreated = true){
         echo "Json file created successfully".PHP_EOL;
-		exit;
+        exit;
         //the file is finished writing successfully.
     }
     array_shift($crawling);
     foreach($crawling as $site){
-    	follow_links($site);
+        follow_links($site);
     }
 }
 
