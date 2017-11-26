@@ -10,7 +10,7 @@
 
 //url of the page being tested. 
 //this will be changed to the input url of the customers website.
-$start = "https://www.burritos.ie/";
+$start = "http://www.tunesoman.com/";
 
 $already_crawled = array();
 $crawling = array();
@@ -24,7 +24,7 @@ function get_details($url){
     @$doc->loadHTML(@file_get_contents($url, false, $context));
 
     $title = $doc->getElementsByTagName("title");
-    $title = $title->item(0)->nodeValue;
+    @$title = $title->item(0)->nodeValue;
 
     //echo $title."\n";
 
@@ -42,7 +42,7 @@ function get_details($url){
         
     }
     global $crawlResult;
-  	$crawlResult =  '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},';
+    $crawlResult = '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},'; 
     return $crawlResult;
 }
 
@@ -61,6 +61,7 @@ function follow_links($url){
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
+	$inputList = $doc->getElementsByTagName("input");
 
     foreach($linkList as $link){
         //getting the links attached to the a tags
@@ -78,6 +79,7 @@ function follow_links($url){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)["path"]).substr($l, 1);
         }
         else if(substr($l, 0, 1) == "#"){
+            //problem with getting the title for this oen
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].parse_url($url)["path"].$l;
         }
         else if(substr($l, 0, 3) == "../"){
@@ -96,10 +98,10 @@ function follow_links($url){
             echo get_details($l)."\n";
 
             global $crawlResult;
-            //$crawlExport = json_encode($crawlResult);
+            $crawlExport = json_encode($crawlResult);
             
             //test to see if the file would write properly
-            if(file_put_contents("lib/crawlResults.json", $crawlResult, FILE_APPEND)){
+            if(file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND)){
                 $fileCreated = true;
             }
             else{
@@ -115,21 +117,12 @@ function follow_links($url){
     }
     array_shift($crawling);
     foreach($crawling as $site){
-		/*
-		if($site.parse_url($url)["host"] == $already_crawled.parse_url($url)["host"]){
-        	follow_links($site);
-		}
-		else{
-			break;
-		}
-        /*
-        if($site.parse_url($url)["host"] != $already_crawled.parse_url($url)["host"][-1]){
-        	break;
-        }
-        */
-		follow_links($site);
+    	follow_links($site);
     }
 }
 
 follow_links($start);
+
+print_r($already_crawled);
 ?>
+
