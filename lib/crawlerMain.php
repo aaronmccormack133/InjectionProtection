@@ -1,11 +1,8 @@
 <?php
 
-//Couple changes need to be made.
 //user input for the crawler.
 //exclude certain links
 //traverse websites method should be altered.
-//trimming titles etc.
-//Character encoding should be looked at.
 //proper export to json for database import 
 
 //url of the page being tested. 
@@ -27,9 +24,22 @@ function get_details($url){
     @$title = $title->item(0)->nodeValue;
 
     global $crawlResult;
-    //$crawlResult = '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},'; 
 	$crawlResult = '{"Title: "'.str_replace("\n", "", rtrim($title)).'", "URL: "'.$url.'"},';
     return $crawlResult;
+}
+
+function parseUrls($currentCrawl, $lastCrawl){
+    $cCrawl = parse_url($currentCrawl);
+    foreach($lastCrawl as $lasCrawl){
+        $lCrawl = parse_url($lasCrawl);
+    }
+
+    if($cCrawl['host'] == $lCrawl['host']){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 function follow_links($url){
@@ -94,29 +104,29 @@ function follow_links($url){
             $crawlExport = json_encode($crawlResult);
             
             //test to see if the file would write properly
-            if(file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND)){
-                $fileCreated = true;
-            }
-            else{
-                echo "Error creating file";
-            }
-            //echo $l."\n";
+            file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
         }
     }
-    if($fileCreated = true){
-        echo "Json file created successfully".PHP_EOL;
-        exit;
-        //the file is finished writing successfully.
-    }
+    
     array_shift($crawling);
     foreach($crawling as $site){
+        if(parseUrls($site, $already_crawled) == false){
+            continue;
+            //having a problem here.
+            //the crawler stops once it gets a false.
+            //need it to go back one, and then skip the last url in the $already_crawled array adn keep
+            //going in the $crawling array.
+            //
+            //0 = 1 
+            //-> 1 = 2
+            //-> 2 != 3 (its stopping here, need it to go to that ->)
+            //-> 2 = 4
+        } 
         follow_links($site);
     }
 }
 
 follow_links($start);
-
-print_r($already_crawled);
 ?>
 
     
