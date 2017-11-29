@@ -26,23 +26,9 @@ function get_details($url){
     $title = $doc->getElementsByTagName("title");
     @$title = $title->item(0)->nodeValue;
 
-    //echo $title."\n";
-
-    $description = "";
-    $keywords = "";
-    $metas = $doc->getElementsByTagName("meta");
-    for($i = 0; $i < $metas->length; $i++){
-        $meta = $metas->item($i);
-
-        if(strtolower($meta->getAttribute("name") == "description"))
-            $description = $meta->getAttribute("content");    
-       
-        if(strtolower($meta->getAttribute("name") == "keywords"))
-            $keywords = $meta->getAttribute("content");
-        
-    }
     global $crawlResult;
-    $crawlResult = '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},'; 
+    //$crawlResult = '{ "Title": "'.str_replace("\n", "", $title).'", "Description": "'.str_replace("\n", "", $description).'", "Keywords": "'.str_replace("\n", "", $keywords).'", "URL": "'.$url.'"},'; 
+	$crawlResult = '{"Title: "'.str_replace("\n", "", rtrim($title)).'", "URL: "'.$url.'"},';
     return $crawlResult;
 }
 
@@ -56,19 +42,22 @@ function follow_links($url){
     $context = stream_context_create($options);
 
     //getting the dom
+	//parses html pages
     $doc = new DOMDocument();
+	//filegetcontents gets the stuff on the page. $url is what is passed in
+	//this could be curl
     @$doc->loadHTML(@file_get_contents($url, false, $context));
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
-    $inputList = $doc->getElementsByTagName("input");
 
+	//loops through all of the links
     foreach($linkList as $link){
         //getting the links attached to the a tags
         $l = $link->getAttribute("href");
         
         //adapts to all sort of links by appending the website tunnel/directory/domain 
-        //problem with this regarding some strings being appended to that should not be.
+        //
         if(substr($l, 0, 1) == "/" && substr($l, 0, 2) != "//"){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].$l;
         }
@@ -92,9 +81,13 @@ function follow_links($url){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)["path"]).$l;
         }
 
+		//making sure theere is no dupes.
+		//returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
+			//the value of $l is = to a blank value in that array
             $already_crawled[] = $l;
             $crawling[] = $l;
+			//get_details shows what is added to the array
             echo get_details($l)."\n";
 
             global $crawlResult;
