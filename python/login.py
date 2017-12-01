@@ -33,7 +33,7 @@ while(test == True) :
             run = browser.find_element_by_xpath(xpath).click()
             time.sleep(2)
             browser.quit()
-    pass
+    time.sleep(3)
     print("1 complete\n")
 
 
