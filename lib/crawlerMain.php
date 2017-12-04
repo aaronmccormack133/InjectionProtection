@@ -7,7 +7,13 @@
 
 //url of the page being tested. 
 //this will be changed to the input url of the customers website.
+
+//compare the start url against the last url in the crawled array
 $start = "http://www.tunesoman.com/";
+//$start1 = "http://www.tunesoman.com";
+
+global $parseStart;
+$parseStart = parse_url("http://www.tunesoman.com");
 
 $already_crawled = array();
 $crawling = array();
@@ -26,21 +32,17 @@ function get_details($url){
     global $crawlResult;
 	$crawlResult = '{"Title: "'.str_replace("\n", "", rtrim($title)).'", "URL: "'.$url.'"},';
     return $crawlResult;
+	//$test1 = $url;
 }
 
+/*
 function parseUrls($currentCrawl, $lastCrawl){
     $cCrawl = parse_url($currentCrawl);
     foreach($lastCrawl as $lasCrawl){
         $lCrawl = parse_url($lasCrawl);
     }
-
-    if($cCrawl['host'] == $lCrawl['host']){
-        return true;
-    }
-    else{
-        return false;
-    }
 }
+*/
 
 function follow_links($url){
 
@@ -98,7 +100,7 @@ function follow_links($url){
             $already_crawled[] = $l;
             $crawling[] = $l;
 			//get_details shows what is added to the array
-            echo get_details($l)."\n";
+            echo get_details($already_crawled)."\n";
 
             global $crawlResult;
             $crawlExport = json_encode($crawlResult);
@@ -110,7 +112,19 @@ function follow_links($url){
     
     array_shift($crawling);
     foreach($crawling as $site){
-        if(parseUrls($site, $already_crawled) == false){
+		$lastUrl = end($already_crawled); 
+		$parsedLastUrl = parse_url($lastUrl);
+		
+		if($parsedLastUrl['host'] == $parseStart['host']){
+			follow_links($site);
+		}
+		else{
+			exit;
+		}
+		//parseUrls($site, $already_crawled);
+		/*
+        if(parseUrls($site, $already_crawled) === false){
+			follow_links($site);
             continue;
             //having a problem here.
             //the crawler stops once it gets a false.
@@ -121,7 +135,7 @@ function follow_links($url){
             //-> 1 = 2
             //-> 2 != 3 (its stopping here, need it to go to that ->)
             //-> 2 = 4
-        } 
+        } */
         follow_links($site);
     }
 }
