@@ -10,10 +10,9 @@
 
 //compare the start url against the last url in the crawled array
 $start = "http://www.tunesoman.com/";
-//$start1 = "http://www.tunesoman.com";
 
 global $parseStart;
-$parseStart = parse_url("http://www.tunesoman.com");
+$parseStart = parse_url($start);
 
 $already_crawled = array();
 $crawling = array();
@@ -30,7 +29,7 @@ function get_details($url){
     @$title = $title->item(0)->nodeValue;
 
     global $crawlResult;
-	$crawlResult = '{"Title: "'.str_replace("\n", "", rtrim($title)).'", "URL: "'.$url.'"},';
+	$crawlResult = '{"Title: "'.rtrim($title).'", "URL: "'.$url.'"},';
     return $crawlResult;
 	//$test1 = $url;
 }
@@ -80,7 +79,6 @@ function follow_links($url){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)["path"]).substr($l, 1);
         }
         else if(substr($l, 0, 1) == "#"){
-            //problem with getting the title for this oen
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].parse_url($url)["path"].$l;
         }
         else if(substr($l, 0, 3) == "../"){
@@ -90,7 +88,7 @@ function follow_links($url){
             continue;
         }
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
-            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)["path"]).$l;
+            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)['path']).$l;
         }
 
 		//making sure theere is no dupes.
@@ -100,44 +98,50 @@ function follow_links($url){
             $already_crawled[] = $l;
             $crawling[] = $l;
 			//get_details shows what is added to the array
-            echo get_details($already_crawled)."\n";
+            echo get_details($l)."\n";
 
             global $crawlResult;
             $crawlExport = json_encode($crawlResult);
             
             //test to see if the file would write properly
+            //something here
+            global $parseStart;
+            global $parseLastUrl;
+            $lastUrl = $l; 
+            $parsedLastUrl = parse_url($lastUrl);
+
+            print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
+            print_r($parseStart['host'].PHP_EOL);
             file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
+
+            if(stripos($parsedLastUrl['host'], $parseStart['host'])){
+            }
+            else{
+                continue;
+
+            }
         }
     }
     
     array_shift($crawling);
     foreach($crawling as $site){
-		$lastUrl = end($already_crawled); 
-		$parsedLastUrl = parse_url($lastUrl);
-		
+    /*    
 		if($parsedLastUrl['host'] == $parseStart['host']){
-			follow_links($site);
-		}
-		else{
-			exit;
-		}
-		//parseUrls($site, $already_crawled);
-		/*
-        if(parseUrls($site, $already_crawled) === false){
-			follow_links($site);
+            follow_links($site);
+            echo "next";
             continue;
-            //having a problem here.
-            //the crawler stops once it gets a false.
-            //need it to go back one, and then skip the last url in the $already_crawled array adn keep
-            //going in the $crawling array.
-            //
-            //0 = 1 
-            //-> 1 = 2
-            //-> 2 != 3 (its stopping here, need it to go to that ->)
-            //-> 2 = 4
-        } */
-        follow_links($site);
+		}
+        else{
+            break;
+        }
+     */
+	   follow_links($site);
+   
     }
+    //echo $parseStart;
+    //print_r($parseStart['host']."\n");
+    //print_r("last item in the array is: ".$parsedLastUrl['host']);
+    //echo $lastUrl;
 }
 
 follow_links($start);
