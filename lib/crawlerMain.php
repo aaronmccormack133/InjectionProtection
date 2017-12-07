@@ -11,8 +11,7 @@
 //compare the start url against the last url in the crawled array
 $start = "http://www.tunesoman.com/";
 
-global $parseStart;
-$parseStart = parse_url($start);
+$startClone = $start;
 
 $already_crawled = array();
 $crawling = array();
@@ -94,32 +93,54 @@ function follow_links($url){
 		//making sure theere is no dupes.
 		//returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
+			global $startClone;
+			global $parsedLastUrl;
 			//the value of $l is = to a blank value in that array
             $already_crawled[] = $l;
             $crawling[] = $l;
+
 			//get_details shows what is added to the array
             echo get_details($l)."\n";
 
+			$lastUrl = $l;
+			$parsedLastUrl = explode('.', $lastUrl);
+			$explodeLastUrl = $parsedLastUrl[1];
+			$parsedStart = explode('.', $startClone);
+			$explodeStartUrl = $parsedStart[1];
+			echo $explodeStartUrl;
+			echo $explodeLastUrl;
             global $crawlResult;
             $crawlExport = json_encode($crawlResult);
-            
-            //test to see if the file would write properly
-            //something here
-            global $parseStart;
-            global $parseLastUrl;
-            $lastUrl = $l; 
-            $parsedLastUrl = parse_url($lastUrl);
-
-            print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
-            print_r($parseStart['host'].PHP_EOL);
+			/*
+			if($parsedLastUrl !== $parsedStart){
+				break;
+			}
+			else{
+				continue;
+			}
+			*/
+            //print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
+            //print_r($parseStart['host'].PHP_EOL);
+			if($explodeLastUrl !== $explodeStartUrl){
+				echo $explodeLastUrl;
+				exit;
+			}
             file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
-
-            if(stripos($parsedLastUrl['host'], $parseStart['host'])){
+			
+			
+			/*
+			if($parseStart['host'] !== $parsedLastUrl['host']){
+				echo "echo"."\n";	
+			}
+            
+			if(stripos($parsedLastUrl['host'], $parseStart['host'])){
+				break;
+				echo "echo"."\n";
             }
             else{
-                continue;
-
+			
             }
+			*/
         }
     }
     
