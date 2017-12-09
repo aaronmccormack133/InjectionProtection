@@ -5,6 +5,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Injection Protection</title>
+
+         <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+        </script>
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -25,20 +32,41 @@
         <!--Theme Responsive css-->
         <link rel="stylesheet" href="assets/css/responsive.css" />
 
-        <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-		<script
-		src="https://code.jquery.com/jquery-3.2.1.min.js"
-		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-		crossorigin="anonymous">
-		  </script>
-		  <script src="https://code.highcharts.com/highcharts.js"></script>
-		  <script src="https://code.highcharts.com/modules/series-label.js"></script>
-		  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+          
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/mapdata/index.js?1"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="https://www.highcharts.com/samples/maps/demo/all-maps/jquery.combobox.js"></script>
+
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/style.css?v=1.0">
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+
+<!-- Flag sprites service provided by Martijn Lafeber, https://github.com/lafeber/world-flags-sprite/blob/master/LICENSE -->
+<link rel="stylesheet" type="text/css" href="https://cloud.github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
+       
+
+
+
+
     </head>
     <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+       
 
         <!-- Sections -->
         
@@ -183,63 +211,246 @@
 	
 	</script>
                         
-            <div class="container">
+ 
 
+<div id="wrapper">
+    <div id="container"></div>
+    
+</div>
 
-                <div class="row">
-                    <div class="main_features_content2">
+<script type="text/javascript">
 
-                        
+    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=world-population-history.csv&callback=?', function (csv) {
 
-                               
-                            </div>
-                        </div>
+    // Parse the CSV Data
+    /*Highcharts.data({
+        csv: data,
+        switchRowsAndColumns: true,
+        parsed: function () {
+            console.log(this.columns);
+        }
+    });*/
 
-                    </div>
-                </div>
-            </div>
-        </section><!--End of Features 2 Section -->
+    // Very simple and case-specific CSV string splitting
+    function CSVtoArray(text) {
+        return text.replace(/^"/, '')
+            .replace(/",$/, '')
+            .split('","');
+    }
+
+    csv = csv.split(/\n/);
+
+    var countries = {},
+        mapChart,
+        countryChart,
+        numRegex = /^[0-9\.]+$/,
+        quoteRegex = /\"/g,
+        categories = CSVtoArray(csv[1]).slice(4);
+
+    // Parse the CSV into arrays, one array each country
+    $.each(csv.slice(2), function (j, line) {
+        var row = CSVtoArray(line),
+            data = row.slice(4);
+
+        $.each(data, function (i, val) {
+
+            val = val.replace(quoteRegex, '');
+            if (numRegex.test(val)) {
+                val = parseInt(val, 10);
+            } else if (!val) {
+                val = null;
+            }
+            data[i] = val;
+        });
+        countries[row[1]] = {
+            name: row[0],
+            code3: row[1],
+            data: data
+        };
+    });
+
+    // For each country, use the latest value for current population
+    var data = [];
+    for (var code3 in countries) {
+        if (countries.hasOwnProperty(code3)) {
+            var value = null,
+                year,
+                itemData = countries[code3].data,
+                i = itemData.length;
+
+            while (i--) {
+                if (typeof itemData[i] === 'number') {
+                    value = itemData[i];
+                    year = categories[i];
+                    break;
+                }
+            }
+            data.push({
+                name: countries[code3].name,
+                code3: code3,
+                value: value,
+                year: year
+            });
+        }
+    }
+
+    // Add lower case codes to the data set for inclusion in the tooltip.pointFormat
+    var mapData = Highcharts.geojson(Highcharts.maps['custom/world']);
+    $.each(mapData, function () {
+        this.id = this.properties['hc-key']; // for Chart.get()
+        this.flag = this.id.replace('UK', 'GB').toLowerCase();
+    });
+
+    // Wrap point.select to get to the total selected points
+    Highcharts.wrap(Highcharts.Point.prototype, 'select', function (proceed) {
+
+        proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+
+        var points = mapChart.getSelectedPoints();
+        if (points.length) {
+            if (points.length === 1) {
+                $('#info #flag').attr('class', 'flag ' + points[0].flag);
+                $('#info h2').html(points[0].name);
+            } else {
+                $('#info #flag').attr('class', 'flag');
+                $('#info h2').html('Comparing countries');
+
+            }
+        
+
+            if (!countryChart) {
+                countryChart = Highcharts.chart('country-chart', {
+                    chart: {
+                        height: 250,
+                        spacingLeft: 0
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        tickPixelInterval: 50,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        title: null,
+                        opposite: true
+                    },
+                    tooltip: {
+                        split: true
+                    },
+                    plotOptions: {
+                        series: {
+                            animation: {
+                                duration: 500
+                            },
+                            marker: {
+                                enabled: false
+                            },
+                            threshold: 0,
+                            pointStart: parseInt(categories[0], 10)
+                        }
+                    }
+                });
+            }
+
+            $.each(points, function (i) {
+                // Update
+                if (countryChart.series[i]) {
+                    /*$.each(countries[this.code3].data, function (pointI, value) {
+                        countryChart.series[i].points[pointI].update(value, false);
+                    });*/
+                    countryChart.series[i].update({
+                        name: this.name,
+                        data: countries[this.code3].data,
+                        type: points.length > 1 ? 'line' : 'area'
+                    }, false);
+                } else {
+                    countryChart.addSeries({
+                        name: this.name,
+                        data: countries[this.code3].data,
+                        type: points.length > 1 ? 'line' : 'area'
+                    }, false);
+                }
+            });
+            while (countryChart.series.length > points.length) {
+                countryChart.series[countryChart.series.length - 1].remove(false);
+            }
+            countryChart.redraw();
+
+        } else {
+            $('#info #flag').attr('class', '');
+            $('#info h2').html('');
+            $('#info .subheader').html('');
+            if (countryChart) {
+                countryChart = countryChart.destroy();
+            }
+        }
+    });
+
+    // Initiate the map chart
+    mapChart = Highcharts.mapChart('container', {
+
+        title: {
+            text: 'Population history by country'
+        },
+
+        subtitle: {
+            text: 'Source: <a href="http://data.worldbank.org/indicator/SP.POP.TOTL/countries/1W?display=default">The World Bank</a>'
+        },
+
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+
+        colorAxis: {
+            type: 'logarithmic',
+            endOnTick: false,
+            startOnTick: false,
+            min: 50000
+        },
+
+        tooltip: {
+            footerFormat: '<span style="font-size: 10px">(Click for details)</span>'
+        },
+
+        series: [{
+            data: data,
+            mapData: mapData,
+            joinBy: ['iso-a3', 'code3'],
+            name: 'Current population',
+            allowPointSelect: true,
+            cursor: 'pointer',
+            states: {
+                select: {
+                    color: '#a4edba',
+                    borderColor: 'black',
+                    dashStyle: 'shortdot'
+                }
+            }
+        }]
+    });
+
+    // Pre-select a country
+     mapChart.get('us').select();
+});
+</script>
+    
+    
+    
+
         
 
 
-        <section id="service" class="service2 sections lightbg">
-            <div class="container">
-                <div class="row">
-                    <div class="main_service2">
-                        <div class="head_title text-center">
-                            <h2>SERVICES WE PROVIDE</h2>
-                            <p>condimentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                        </div>
 
-                        <div class="service_content">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="single_service2">
-                                    <div class="single_service_left">
-                                        <img src="assets/images/flaticon1.png" alt="" />
-                                    </div>
-                                    <div class="single_service_right">
-                                        <h2>Branding</h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="single_service2">
-                                    <div class="single_service_left">
-                                        <img src="assets/images/flaticon2.png" alt="" />
-                                    </div>
-                                    <div class="single_service_right">
-                                        <h2>Branding</h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section><!-- End of Service2 Section -->		
 
 
 
@@ -282,7 +493,6 @@
 		<script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="assets/js/vendor/bootstrap.min.js"></script>
-
         <script src="assets/js/plugins.js"></script>
         <script src="assets/js/modernizr.js"></script>
         <script src="assets/js/main.js"></script>

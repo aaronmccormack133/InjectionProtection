@@ -53,6 +53,33 @@ a span {
     text-align: center;
     color: gray;
 }
+#container  {
+    height: 500px; 
+    width: 800px; 
+    margin: 0 auto; 
+}
+
+.highcharts-tooltip>span {
+    padding: 10px;
+    white-space: normal !important;
+    width: 200px;
+}
+
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+
+.f32 .flag {
+    vertical-align: middle !important;
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+
 *,
 *:before,
 *:after {
@@ -81,23 +108,7 @@ ul {
 img {
     max-width: 100%;
 }
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
-.uneditable-input {
-    outline: none;
+
 }
 .form-control {
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -523,65 +534,8 @@ Button
     padding-bottom: 20px;
 }
 
-/* features  section */
 
-.single_features_left img{
-    height:460px;
-}
-.single_features_right {
-    margin-top:10%;
-}
 
-.single_features_right h2 {
-    margin-bottom: 40px;
-    font-size:40px;
-    color:#222222;
-}
-
-.single_features_right p{
-    font-size:18px;
-}
-.single_features_right ul li{
-    font-size:18px;
-    margin-top:3%;
-}
-
-/* Service2 Section */
-.service2{}
-.service_content{
-    width: 90%;
-    margin: 0 auto;
-}
-
-.single_service2{
-    margin-top: 90px;
-}
-.single_service_left{
-    display: inline-block;
-}
-.single_service2 img{
-    width: 70px;
-    margin-top: -70px;
-
-}
-
-.single_service2 .single_service_right{
-    display: inline-block;
-    width: 70%;
-    padding-left: 20px;
-    overflow: hidden;
-}
-.single_service_right h2{
-
-    font-size:24px;
-    text-transform:uppercase;
-    color:#222222;
-    margin: 0;
-}
-.single_service_right p{
-    font-size:18px;
-    color:#777777;
-}
 
 
 
@@ -632,37 +586,6 @@ Button
 
 /*scollup icon*/
 
-.scrollup {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    opacity: .3;
-    position: fixed;
-    bottom: 20px;
-    right: 25px;
-    color: #fff;
-    cursor: pointer;
-    background-color: #000;
-    z-index: 10;
-    transition: opacity .5s, background-color .5s;
-    -moz-transition: opacity .5s, background-color .5s;
-    -webkit-transition: opacity .5s, background-color .5s;
-}
-.scrollup:hover {
-    background: #82ca9c;
-    opacity: 1;
-}
-.scrollup i {
-    font-size: 13px;
-    position: absolute;
-    opacity: 1;
-    color: #fff;
-    left: 50%;
-    top: 50%;
-    margin-top: -7px;
-    margin-left: -6px;
-    text-decoration: none;
 
-}
 
 
