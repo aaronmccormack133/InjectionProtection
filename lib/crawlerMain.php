@@ -39,13 +39,6 @@ function follow_links($url){
 
     global $already_crawled;
     global $crawling;
-    //$parsedLastUrl = explode('.', $lastUrl);
-    //$explodeLastUrl = $parsedLastUrl[1];
-	//$parsedStart = explode('.', $startClone);
-	//$explodeStartUrl = $parsedStart[1];
-	//echo $explodeStartUrl;
-	//echo $explodeLastUrl;
-
 
     $options = array('http'=>array('method'=>"GET", 'headers'=>"User-Agent: crawlerBot\n"));
 
@@ -89,13 +82,7 @@ function follow_links($url){
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
         }
-        /*
-        if($explodeStartUrl == $explodeLastUrl){
-		    $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
-            $DBcon->query($sql);
-        }
-        */
-		//making sure theere is no dupes.
+        //making sure theere is no dupes.
 		//returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
 			global $startClone;
@@ -111,29 +98,12 @@ function follow_links($url){
 			$parsedLastUrl = explode('.', $lastUrl);
 			$explodeLastUrl = $parsedLastUrl[1];
 			$parsedStart = explode('.', $startClone);
-			$explodeStartUrl = $parsedStart[1];
+            $explodeStartUrl = $parsedStart[1];
+
 			echo $explodeStartUrl;
-			echo $explodeLastUrl;
-            global $crawlResult;
-            $crawlExport = json_encode($crawlResult);
-			/*
-			if($parsedLastUrl !== $parsedStart){
-				break;
-			}
-			else{
-				continue;
-			}
-            //print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
-            //print_r($parseStart['host'].PHP_EOL);
-			if($explodeLastUrl !== $explodeStartUrl){
-				echo $explodeLastUrl;
-			    exit;	
-            }
-            while($explodeLastUrl == $explodeStartUrl){
-                continue;
-            }
-             */
-            if($explodeStartUrl == $explodeLastUrl){
+            echo $explodeLastUrl;
+            
+			if($explodeStartUrl == $explodeLastUrl){
                 $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
                 global $DBcon;
                 $DBcon->query($sql);
@@ -141,7 +111,6 @@ function follow_links($url){
             else{
                 echo "not same domain";
             }
-            file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
         }
     }
     
