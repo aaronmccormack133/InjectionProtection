@@ -21,7 +21,7 @@
 */
 
 // This is our starting point. Change this to whatever URL you want.
-$start = "../testHtml/testHtml.html";
+$start = "http://www.tunesoman.com/";
 
 // Our 2 global arrays containing our links to be crawled.
 $already_crawled = array();
@@ -42,7 +42,7 @@ function get_details($url) {
 	// Create an array of all of the title tags.
 	$title = $doc->getElementsByTagName("title");
 	// There should only be one <title> on each page, so our array should have only 1 element.
-	@$title = $title->item(0)->nodeValue;
+	$title = $title->item(0)->nodeValue;
 	// Give $description and $keywords no value initially. We do this to prevent errors.
 	$description = "";
 	$keywords = "";
@@ -95,7 +95,7 @@ function follow_links($url) {
 		} else if (substr($l, 0, 11) == "javascript:") {
 			continue;
 		} else if (substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http") {
-			@$l = parse_url($url)["scheme"]."://".parse_url($url)["host"].$l;
+			$l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
 		}
 		// If the link isn't already in our crawl array add it, otherwise ignore it.
 		if (!in_array($l, $already_crawled)) {

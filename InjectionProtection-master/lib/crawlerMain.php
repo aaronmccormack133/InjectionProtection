@@ -9,10 +9,10 @@
 //this will be changed to the input url of the customers website.
 
 //compare the start url against the last url in the crawled array
-$start = "http://www.tunesoman.com";
-set_time_limit(180);
+$start = "http://www.tunesoman.com/";
 
-$startClone = $start;
+global $parseStart;
+$parseStart = parse_url($start);
 
 $already_crawled = array();
 $crawling = array();
@@ -33,6 +33,15 @@ function get_details($url){
     return $crawlResult;
 	//$test1 = $url;
 }
+
+/*
+function parseUrls($currentCrawl, $lastCrawl){
+    $cCrawl = parse_url($currentCrawl);
+    foreach($lastCrawl as $lasCrawl){
+        $lCrawl = parse_url($lasCrawl);
+    }
+}
+*/
 
 function follow_links($url){
 
@@ -79,55 +88,60 @@ function follow_links($url){
             continue;
         }
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
-            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
+            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)['path']).$l;
         }
 
 		//making sure theere is no dupes.
 		//returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
-			global $startClone;
-			global $parsedLastUrl;
 			//the value of $l is = to a blank value in that array
             $already_crawled[] = $l;
             $crawling[] = $l;
-
 			//get_details shows what is added to the array
             echo get_details($l)."\n";
 
-			$lastUrl = $l;
-			$parsedLastUrl = explode('.', $lastUrl);
-			$explodeLastUrl = $parsedLastUrl[1];
-			$parsedStart = explode('.', $startClone);
-			$explodeStartUrl = $parsedStart[1];
-			echo $explodeStartUrl;
-			echo $explodeLastUrl;
             global $crawlResult;
             $crawlExport = json_encode($crawlResult);
-			/*
-			if($parsedLastUrl !== $parsedStart){
-				break;
-			}
-			else{
-				continue;
-			}
-            //print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
-            //print_r($parseStart['host'].PHP_EOL);
-			if($explodeLastUrl !== $explodeStartUrl){
-				echo $explodeLastUrl;
-			    exit;	
-            }
-            while($explodeLastUrl == $explodeStartUrl){
-                continue;
-            }
-             */
+            
+            //test to see if the file would write properly
+            //something here
+            global $parseStart;
+            global $parseLastUrl;
+            $lastUrl = $l; 
+            $parsedLastUrl = parse_url($lastUrl);
+
+            print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
+            print_r($parseStart['host'].PHP_EOL);
             file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
+
+            if(stripos($parsedLastUrl['host'], $parseStart['host'])){
+            }
+            else{
+                continue;
+
+            }
         }
     }
     
     array_shift($crawling);
     foreach($crawling as $site){
-        follow_links($site);
+    /*    
+		if($parsedLastUrl['host'] == $parseStart['host']){
+            follow_links($site);
+            echo "next";
+            continue;
+		}
+        else{
+            break;
+        }
+     */
+	   follow_links($site);
+   
     }
+    //echo $parseStart;
+    //print_r($parseStart['host']."\n");
+    //print_r("last item in the array is: ".$parsedLastUrl['host']);
+    //echo $lastUrl;
 }
 
 follow_links($start);
