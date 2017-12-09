@@ -3,7 +3,7 @@
 // doesn't matter if it takes 20-30 seconds
 $time_start = microtime(true);
   
-
+require('dbConfig.php');
 require 'simple_html_dom.php';
  $i = 0;
 $html_output = ""; // use this to build up html output
@@ -12,7 +12,7 @@ $html_output = ""; // use this to build up html output
 
 $sites = array(
  
-  array('https://www.google.ie/search?q=TEST&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=bottle&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
     /* more sites go here, like this */
     // array('URL', 'KEY')
 );
@@ -34,28 +34,18 @@ foreach ($sites as $site){
      // add link to $html_output
     
      
-      $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "links";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
 
 $sql = "INSERT INTO link (links)
 VALUES ('$element->plaintext')";
 
-if ($conn->query($sql) === TRUE) {
+
+
+if ($DBcon->query($sql) === TRUE) {
     echo "New record created successfully";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql . "<br>" . $DBcon->error;
 }
 
-$conn->close();
      
    }
   sleep(20);

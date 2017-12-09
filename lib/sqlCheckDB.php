@@ -1,5 +1,5 @@
 <?php
-include 'dbConfig.php';
+require('dbConfig.php');
 $ch = curl_init();
 /*
 $arr = array(1, 2, 3, 4);
@@ -9,7 +9,7 @@ foreach ($arr as &$value) {
 */
 $i;
 
-
+$noError = false;
 #keywords found on sqlmap github account: https://github.com/sqlmapproject/sqlmap/blob/afc2a42383c48e7209c3dbff23a5eb05333b485e/xml/errors.xml
 global $mySqlDB;
 $mySqlDB = array("SQL",
@@ -45,13 +45,7 @@ $msSqlServerDB = array("Driver.*? SQL[\-\_\ ]*Server",
 	"macromedia\.jdbc\.sqlserver",
 	"com\.jnetdirect\.jsql"
 );
-global $msAccessDB;
-$msAccess = array("Microsoft Access (\d+ )?Driver",
-	"JET Database Engine",
-	"Access Database Engine",
-	"ODBC Microsoft Access",
-	"Syntax error \(missing operator\) in query expression"
-);
+
 global $oracleDB;
 $oracleDB = array("\bORA-\d{5}",
 	"Oracle error",
@@ -116,58 +110,100 @@ $hsqlDB = array("org\.hsqldb\.jdbc",
 
 function sqlCheck($page, $sqlArray){
 	foreach($sqlArray as $elem){
-		$result = stripos($page, $elem);
-		if($result == false){
-			echo "Page is not vulnerable\n";
+			$result = strpos($page, $elem);
+		if($result == true){
+			echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
+			
+			
 		}
 		else{
-			echo "Page is vulnerable\n";
-			
-			
+	$noError = true;
 		}
 	}
 }
+/*
+$result = mysqli_query ($con,$query);
+while ($row = mysqli_fetch_array ($result)) {
+    echo "<p>Name: ".$row['name']."</p>";
+    echo "<p>Technologies: ".$row['tech']."</p>";
+    echo "<p>Description: ".$row['description']."</p>";
+}
+*/
+/*
+			$query = "SELECT * FROM table";
+$result = mysql_query($query);
+//iterate over all the rows
+while($row = mysql_fetch_assoc($result)){
+    //iterate over all the fields
+    foreach($row as $key => $val){
+        //generate output
+        echo $key . ": " . $val . "<BR />";
+    }		
+*/
+
+						
+					
+				//	echo $appendUrl."\r\n";
 					
 
-					
-$result = $conn->query("SELECT * from link");
-    if ($result->num_rows > 0) {
-        // output data of each row
-        while($appendUrl1 = $result->fetch_array()) {
-             $appendUrl = $appendUrl1["links"];
-						$test = "'";
-					$appendUrl = $appendUrl.$test;
-					echo $appendUrl."\r\n";
-					curl_setopt($ch, CURLOPT_URL, $appendUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-$data = curl_exec($ch);
 					//	foreach($mySqlDB AS $error){
 							
 
-if($data === FALSE){
-	echo "curl error " . curl_error($ch);
-}
+
 					//	}
 					
 					
-					sqlCheck($data, $mySqlDB);
-					sqlCheck($data, $postgreSQLDB);
-					sqlCheck($data, $msSqlServerDB);
+				
 					
 
 					
 				
 				
 						
-				}
-		}
+
+$result = $DBcon->query("SELECT * from link");
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $appendUrl = $row["links"]."'";
+						echo $appendUrl."\n";
+curl_setopt($ch, CURLOPT_URL, $appendUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+$data = curl_exec($ch);
+					
+sqlCheck($data, $mySqlDB);
+sqlCheck($data, $postgreSQLDB);
+sqlCheck($data, $msSqlServerDB);
+
+					sqlCheck($data, $mySqlDB);
+sqlCheck($data, $postgreSQLDB);
+sqlCheck($data, $msSqlServerDB);
+sqlCheck($data, $oracleDB);
+sqlCheck($data, $ibmDB2);
+sqlCheck($data, $informixDB);
+sqlCheck($data, $firebirdDB);
+sqlCheck($data, $SQLiteDB);
+sqlCheck($data, $SAPMaxDB);
+sqlCheck($data, $sybaseDB);
+sqlCheck($data, $ingresDB);
+sqlCheck($data, $frontbaseDB);
+sqlCheck($data, $hsqlDB);
+					if($data === FALSE){
+	echo "curl error " . curl_error($ch);
+}
+            }
+        
+    } else {
+        echo "errr";
+        } 
+
+    
+		
 					
 
 
-
-echo $numberVUl;
 /*
 
 sqlCheck($data, $mySqlDB);

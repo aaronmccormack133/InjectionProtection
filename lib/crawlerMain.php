@@ -81,6 +81,9 @@ function follow_links($url){
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
         }
+        require 'dbConfig.php';
+					$sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
+					$DBcon->query($sql);
 
 		//making sure theere is no dupes.
 		//returns true or false if an element is found in an array
