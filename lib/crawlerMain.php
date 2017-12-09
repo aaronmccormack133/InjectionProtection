@@ -1,4 +1,5 @@
 <?php
+require 'dbConfig.php';
 
 //user input for the crawler.
 //exclude certain links
@@ -10,7 +11,7 @@
 
 //compare the start url against the last url in the crawled array
 $start = "http://www.tunesoman.com";
-set_time_limit(180);
+set_time_limit(90);
 
 $startClone = $start;
 
@@ -38,6 +39,13 @@ function follow_links($url){
 
     global $already_crawled;
     global $crawling;
+    //$parsedLastUrl = explode('.', $lastUrl);
+    //$explodeLastUrl = $parsedLastUrl[1];
+	//$parsedStart = explode('.', $startClone);
+	//$explodeStartUrl = $parsedStart[1];
+	//echo $explodeStartUrl;
+	//echo $explodeLastUrl;
+
 
     $options = array('http'=>array('method'=>"GET", 'headers'=>"User-Agent: crawlerBot\n"));
 
@@ -81,10 +89,12 @@ function follow_links($url){
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
         }
-        require 'dbConfig.php';
-					$sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
-					$DBcon->query($sql);
-
+        /*
+        if($explodeStartUrl == $explodeLastUrl){
+		    $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
+            $DBcon->query($sql);
+        }
+        */
 		//making sure theere is no dupes.
 		//returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
@@ -123,6 +133,14 @@ function follow_links($url){
                 continue;
             }
              */
+            if($explodeStartUrl == $explodeLastUrl){
+                $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
+                global $DBcon;
+                $DBcon->query($sql);
+            }
+            else{
+                echo "not same domain";
+            }
             file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
         }
     }
