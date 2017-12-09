@@ -9,7 +9,8 @@
 //this will be changed to the input url of the customers website.
 
 //compare the start url against the last url in the crawled array
-$start = "http://www.tunesoman.com/";
+$start = "http://www.tunesoman.com";
+set_time_limit(180);
 
 $startClone = $start;
 
@@ -32,15 +33,6 @@ function get_details($url){
     return $crawlResult;
 	//$test1 = $url;
 }
-
-/*
-function parseUrls($currentCrawl, $lastCrawl){
-    $cCrawl = parse_url($currentCrawl);
-    foreach($lastCrawl as $lasCrawl){
-        $lCrawl = parse_url($lasCrawl);
-    }
-}
-*/
 
 function follow_links($url){
 
@@ -87,7 +79,7 @@ function follow_links($url){
             continue;
         }
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
-            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"].dirname(parse_url($url)['path']).$l;
+            $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
         }
 
 		//making sure theere is no dupes.
@@ -118,51 +110,24 @@ function follow_links($url){
 			else{
 				continue;
 			}
-			*/
             //print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
             //print_r($parseStart['host'].PHP_EOL);
 			if($explodeLastUrl !== $explodeStartUrl){
 				echo $explodeLastUrl;
-				exit;
-			}
+			    exit;	
+            }
+            while($explodeLastUrl == $explodeStartUrl){
+                continue;
+            }
+             */
             file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
-			
-			
-			/*
-			if($parseStart['host'] !== $parsedLastUrl['host']){
-				echo "echo"."\n";	
-			}
-            
-			if(stripos($parsedLastUrl['host'], $parseStart['host'])){
-				break;
-				echo "echo"."\n";
-            }
-            else{
-			
-            }
-			*/
         }
     }
     
     array_shift($crawling);
     foreach($crawling as $site){
-    /*    
-		if($parsedLastUrl['host'] == $parseStart['host']){
-            follow_links($site);
-            echo "next";
-            continue;
-		}
-        else{
-            break;
-        }
-     */
-	   follow_links($site);
-   
+        follow_links($site);
     }
-    //echo $parseStart;
-    //print_r($parseStart['host']."\n");
-    //print_r("last item in the array is: ".$parsedLastUrl['host']);
-    //echo $lastUrl;
 }
 
 follow_links($start);
