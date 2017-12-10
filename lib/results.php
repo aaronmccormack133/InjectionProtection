@@ -1,13 +1,15 @@
 <!DOCTYPE html>
+<?php
 
+session_start();
+
+?>
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang="">
 <!--<![endif]-->
 
 <head>
-	<?php
-
-			?>
+	
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>Injection Protection</title>
@@ -75,7 +77,16 @@
 		<div class="flex-row row">
 			<div class="col-md-12 flexcol-editor">
 				<div class="panel panel-default border">
-					<div class="panel-heading" id="button-center-pannel"><button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button></div>
+					<div class="panel-heading" id="button-center-pannel">
+						<form action="" method="POST">
+    <input type="submit" value="Run Spider" name="crawl">
+    </form>
+
+
+   
+						
+						
+					</div>
 				    <h3 class="text-center text-white">Vulnerability Results</h3>
 					<div class="panel-body" id="results">
 						<h5> Results:</h5>
@@ -84,10 +95,24 @@
 									if(isset($_POST['input_value'])){
 				$url = $_POST['input_value'];
 				 $startUrl = $url;
+				 $_SESSION["keepUrl"] = $startUrl;
+
+										
 										
 	
 						include('sqlCheck.php');
 									}
+						
+						
+						// 
+						   if (isset($_POST["crawl"]))
+       {
+				 $start1 = $_SESSION["keepUrl"];
+								 include('crawlerMain.php');
+								 
+							
+								 
+    }
   
   ?>
 

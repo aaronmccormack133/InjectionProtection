@@ -9,7 +9,7 @@
 //this will be changed to the input url of the customers website.
 
 //compare the start url against the last url in the crawled array
-$start = "http://www.tunesoman.com";
+$start = $start1;
 set_time_limit(180);
 
 $startClone = $start;
@@ -96,10 +96,9 @@ function follow_links($url){
             //the value of $l is = to a blank value in that array
             $already_crawled[] = $l;
             $crawling[] = $l;
-            
-            echo get_details($l)."<br />";
+
             //get_details shows what is added to the array
-          
+          echo $l."<br/>";
   
 
             $lastUrl = $l;
