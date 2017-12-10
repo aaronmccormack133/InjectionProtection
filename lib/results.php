@@ -6,12 +6,7 @@
 
 <head>
 	<?php
-			if(isset($_POST['submit'])){
-				$url = $_POST['input_value'];
-				$startUrl = $url;
-				echo $startUrl;
-				
-			}
+
 			?>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -80,17 +75,19 @@
 		<div class="flex-row row">
 			<div class="col-md-12 flexcol-editor">
 				<div class="panel panel-default border">
-                    <div class="panel-heading" id="button-center-pannel">
-                        <form action="crawlerMain.php" method="get">
-                            <button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button>
-                        </form>
-                    </div>
+					<div class="panel-heading" id="button-center-pannel"><button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button></div>
 				    <h3 class="text-center text-white">Vulnerability Results</h3>
 					<div class="panel-body" id="results">
 						<h5> Results:</h5>
 											<?php 
- require('sqlCheck.php');
 
+									if(isset($_POST['input_value'])){
+				$url = $_POST['input_value'];
+				 $startUrl = $url;
+										
+	
+						include('sqlCheck.php');
+									}
   
   ?>
 
@@ -98,11 +95,7 @@
 				</div>
 			</div>
 		<div class="col-md-4 flexcol-preview clearfix"></div>
-		<div class="col-md-4 flexcol-preview clearfix">
-			<div class="panel panel-default">
-				<div class="panel-body" id="search">Search another site?: <input type="first_name" id="searchagain" value="www.examplesite.com" onfocus="this.value==this.defaultValue?this.value='':null" /></div>
-			</div>
-		</div>
+
 		<div class="col-md-4"></div>
 
 		<!--Footer-->
@@ -123,9 +116,7 @@
 					</div>
 				</div>
 		</footer>
-		<div class="scrollup">
-			<a href="#"><i class="fa fa-chevron-up"></i></a>
-		</div>
+
 		<script src="../assets/js/vendor/jquery-1.11.2.min.js"></script>
 		<script src="../assets/js/vendor/bootstrap.min.js"></script>
 		<script src="../assets/js/plugins.js"></script>

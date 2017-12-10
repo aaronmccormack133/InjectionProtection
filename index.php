@@ -17,7 +17,8 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <!--Google fonts links-->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
 
@@ -110,12 +111,16 @@
                                     <div class="row">
                                         <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
                                             <div class="home-contact">
-                                                <form class="form form-vertical" action="lib/results.php" method="POST">
+                                                                                            
+                                                                                                    <form class="form form-vertical" action="lib/results.php" method="POST">
                                                     <div class="input-group">
                                                     <input type="text" class="form-control" placeholder="Enter your website URL" name="input_value"></input>
                                                         <button type="submit" class="btn btn-success" name="submit" onclick="clearform()" >Submit</button>
                                                     </div>
-                                                 </form>
+                                                                                                <p></p> 
+                                                                                
+                                                                            </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -496,3 +501,4 @@
         <script src="assets/js/main.js"></script>
     </body>
 </html>
+    

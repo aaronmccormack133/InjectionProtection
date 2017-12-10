@@ -2,11 +2,9 @@
 $ch = curl_init();
 
 //find link to test the script in the drive
-$startUrl = "";
 //add in a ' to the quotations in the append url bit. 
 $appendUrl = $startUrl."'";
 
-echo $appendUrl.PHP_EOL;
 
 curl_setopt($ch, CURLOPT_URL, $appendUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -137,12 +135,15 @@ $hsqlDB = array("org\.hsqldb\.jdbc",
 
 function sqlCheck($page, $sqlArray){
 	foreach($sqlArray as $elem){
-		$result = strpos($page, $elem);
+		$result = stripos($page, $elem);
 		if($result == false){
-			echo " ";
+			echo "";
 		}
 		else{
-			echo "<p><li>Page is vulnerable. The DBMS might be: ".$elem." </li></p>\n";
+			echo  "<p><li>Page is vulnerable. The DBMS might be: 	".$elem." </li></p>\n";
+			
+							
+			
 		}
 	}
 }
@@ -161,4 +162,4 @@ sqlCheck($data, $ingresDB);
 sqlCheck($data, $frontbaseDB);
 sqlCheck($data, $hsqlDB);
 
-?>
+
