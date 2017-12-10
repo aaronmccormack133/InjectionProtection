@@ -10,7 +10,7 @@ require 'dbConfig.php';
 //this will be changed to the input url of the customers website.
 
 //compare the start url against the last url in the crawled array
-$start = "http://www.tunesoman.com";
+$start = "http://www.$url";
 set_time_limit(90);
 
 $startClone = $start;
@@ -92,7 +92,9 @@ function follow_links($url){
             $crawling[] = $l;
 
 			//get_details shows what is added to the array
-            echo get_details($l)."\n";
+             echo $l."<br>";
+                     flush();
+            ob_flush();
 
 			$lastUrl = $l;
 			$parsedLastUrl = explode('.', $lastUrl);
