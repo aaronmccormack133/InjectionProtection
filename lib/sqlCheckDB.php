@@ -1,5 +1,5 @@
 <?php
-require('dbConfig.php');
+include('dbConfig.php');
 $ch = curl_init();
 /*
 $arr = array(1, 2, 3, 4);
@@ -168,12 +168,12 @@ else{
     echo "errr";
 } 
 function sqlCheck($page, $sqlArray){
-    global $appendUrl;
-	foreach($sqlArray as $elem){
+    foreach($sqlArray as $elem){
+        global $appendUrl;
 	    $result = strpos($page, $elem);
 		if($result == true){
             echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
-            global $Dbcon;
+            global $DBcon;
 			$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$appendUrl."')";
 			$DBcon->query($sql);
 		}
