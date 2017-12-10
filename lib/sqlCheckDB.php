@@ -136,7 +136,7 @@ if ($result->num_rows > 0) {
         // output data of each row
     while($row = $result->fetch_assoc()) {
        $appendUrl = $row["links"]."'";
-
+				$insertUrl = $row["links"];
        curl_setopt($ch, CURLOPT_URL, $appendUrl);
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -170,12 +170,14 @@ else{
 function sqlCheck($page, $sqlArray){
     foreach($sqlArray as $elem){
         global $appendUrl;
+				global $woo;
 	    $result = strpos($page, $elem);
 		if($result == true){
             echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
             global $DBcon;
-			$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$appendUrl."')";
+			$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$insertUrl."')";
 			$DBcon->query($sql);
+			echo  $appendUrl;
 		}
 		else{
 	        $noError = true;
