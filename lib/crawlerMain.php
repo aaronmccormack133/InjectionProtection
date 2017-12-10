@@ -1,5 +1,4 @@
 <?php
-require 'dbConfig.php';
 
 //user input for the crawler.
 //exclude certain links
@@ -11,7 +10,7 @@ require 'dbConfig.php';
 
 //compare the start url against the last url in the crawled array
 $start = "http://www.$url";
-set_time_limit(90);
+set_time_limit(180);
 
 $startClone = $start;
 
@@ -30,9 +29,9 @@ function get_details($url){
     @$title = $title->item(0)->nodeValue;
 
     global $crawlResult;
-	$crawlResult = '{"Title: "'.rtrim($title).'", "URL: "'.$url.'"},';
+    $crawlResult = '{"Title: "'.rtrim($title).'", "URL: "'.$url.'"},';
     return $crawlResult;
-	//$test1 = $url;
+    //$test1 = $url;
 }
 
 function follow_links($url){
@@ -45,16 +44,16 @@ function follow_links($url){
     $context = stream_context_create($options);
 
     //getting the dom
-	//parses html pages
+    //parses html pages
     $doc = new DOMDocument();
-	//filegetcontents gets the stuff on the page. $url is what is passed in
-	//this could be curl
+    //filegetcontents gets the stuff on the page. $url is what is passed in
+    //this could be curl
     @$doc->loadHTML(@file_get_contents($url, false, $context));
 
     //getting all <a> tags on the page on the page 
     $linkList = $doc->getElementsByTagName("a");
 
-	//loops through all of the links
+    //loops through all of the links
     foreach($linkList as $link){
         //getting the links attached to the a tags
         $l = $link->getAttribute("href");
@@ -82,37 +81,53 @@ function follow_links($url){
         else if(substr($l, 0, 5) != "https" && substr($l, 0, 4) != "http"){
             $l = parse_url($url)["scheme"]."://".parse_url($url)["host"]."/".$l;
         }
+        require 'dbConfig.php';
+                    $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
+                    $DBcon->query($sql);
+              echo $l."<br>";
+                     flush();
+    ob_flush();
+
         //making sure theere is no dupes.
-		//returns true or false if an element is found in an array
+        //returns true or false if an element is found in an array
         if(!in_array($l, $already_crawled)){
-			global $startClone;
-			global $parsedLastUrl;
-			//the value of $l is = to a blank value in that array
+            global $startClone;
+            global $parsedLastUrl;
+            //the value of $l is = to a blank value in that array
             $already_crawled[] = $l;
             $crawling[] = $l;
 
-			//get_details shows what is added to the array
-             echo $l."<br>";
-                     flush();
-            ob_flush();
+            //get_details shows what is added to the array
+          
+  
 
-			$lastUrl = $l;
-			$parsedLastUrl = explode('.', $lastUrl);
-			$explodeLastUrl = $parsedLastUrl[1];
-			$parsedStart = explode('.', $startClone);
+            $lastUrl = $l;
+            $parsedLastUrl = explode('.', $lastUrl);
+            $explodeLastUrl = $parsedLastUrl[1];
+            $parsedStart = explode('.', $startClone);
             $explodeStartUrl = $parsedStart[1];
-
-			echo $explodeStartUrl;
+            echo $explodeStartUrl;
             echo $explodeLastUrl;
-            
-			if($explodeStartUrl == $explodeLastUrl){
-                $sql = "INSERT INTO crawler (urls) VALUES ('".$l."')";
-                global $DBcon;
-                $DBcon->query($sql);
+            global $crawlResult;
+            $crawlExport = json_encode($crawlResult);
+            /*
+            if($parsedLastUrl !== $parsedStart){
+                break;
             }
             else{
-                echo "not same domain";
+                continue;
             }
+            //print_r("last item in the array is: ".$parsedLastUrl['host'].PHP_EOL);
+            //print_r($parseStart['host'].PHP_EOL);
+            if($explodeLastUrl !== $explodeStartUrl){
+                echo $explodeLastUrl;
+                exit;   
+            }
+            while($explodeLastUrl == $explodeStartUrl){
+                continue;
+            }
+             */
+          //  file_put_contents("crawlResults.json", $crawlExport, FILE_APPEND);
         }
     }
     

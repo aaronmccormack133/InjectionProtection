@@ -108,19 +108,7 @@ $hsqlDB = array("org\.hsqldb\.jdbc",
 	"Unexpected token.*?in statement \["
 );
 
-function sqlCheck($page, $sqlArray){
-	foreach($sqlArray as $elem){
-			$result = strpos($page, $elem);
-		if($result == true){
-			echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
-			
-			
-		}
-		else{
-	$noError = true;
-		}
-	}
-}
+
 /*
 $result = mysqli_query ($con,$query);
 while ($row = mysqli_fetch_array ($result)) {
@@ -159,14 +147,16 @@ while($row = mysql_fetch_assoc($result)){
 					
 				
 				
-						
 
 $result = $DBcon->query("SELECT * from link");
     if ($result->num_rows > 0) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
             $appendUrl = $row["links"]."'";
-						echo $appendUrl."\n";
+						
+						global $appendUrl;
+					
+						
 curl_setopt($ch, CURLOPT_URL, $appendUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -194,10 +184,31 @@ sqlCheck($data, $hsqlDB);
 	echo "curl error " . curl_error($ch);
 }
             }
+			
         
-    } else {
+    } 
+else {
         echo "errr";
         } 
+function sqlCheck($page, $sqlArray){
+	foreach($sqlArray as $elem){
+			$result = strpos($page, $elem);
+		if($result == true){
+			echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
+			require("dbConfig.php");
+				$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$appendUrl."')";
+					$DBcon->query($sql);
+			
+					
+			
+			
+		}
+		else{
+	$noError = true;
+		}
+	}
+}
+
 
     
 		

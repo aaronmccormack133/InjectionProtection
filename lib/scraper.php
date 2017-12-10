@@ -12,7 +12,13 @@ $html_output = ""; // use this to build up html output
 
 $sites = array(
  
-  array('https://www.google.ie/search?q=bottle&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=about.php?cartID=&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=accinfo.php?cartId=&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=acclogin.php?cartID=&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=add.php?bookid=&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=add_cart.php?num=&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=addcart.php?&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
+  array('https://www.google.ie/search?q=addItem.php&dcr=0&ei=JQjJWf6QD-mcgAb3-qXQAw&start='.$j.'0&sa=N&biw=1920&bih=901', 'cite'),
     /* more sites go here, like this */
     // array('URL', 'KEY')
 );
@@ -48,7 +54,7 @@ if ($DBcon->query($sql) === TRUE) {
 
      
    }
-  sleep(20);
+  sleep(40);
 }
   }
   
