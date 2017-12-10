@@ -8,9 +8,11 @@
 	<?php
 			if(isset($_POST['submit'])){
 				$url = $_POST['input_value'];
-				include"crawlerMain.php";
+				 $startUrl = $url;
+				echo $startUrl;
+				
 			}
-	?>
+			?>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>Injection Protection</title>
@@ -82,36 +84,11 @@
 				    <h3 class="text-center text-white">Vulnerability Results</h3>
 					<div class="panel-body" id="results">
 						<h5> Results:</h5>
-						<p>
-							<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-						</p>
-						<p>
-							<li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</li>
-						<p>
-							<li> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						</li>
-						<p>
-							<li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-						</li>
-						<p>
-							<li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						</li>
-						<p>
-							<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-						</p>
-						<p>
-							<li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</li>
-						<p>
-							<li> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						</li>
-						<p>
-							<li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-						</li>
-						<p>
-							<li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						</li>
+											<?php 
+ require('sqlCheck.php');
+
+  
+  ?>
 
 					</div>
 				</div>
