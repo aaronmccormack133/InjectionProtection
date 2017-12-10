@@ -1,19 +1,14 @@
-
-
 html,
 body {
     font-size: 15px;
-    color: #565656;
     width: 100%;
     padding: 0;
     margin-left: 0;
     margin-right: 0;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-	background-color:#191919 !important;
+	background-color:#000 !important;
 }
-
-
 
 .jumbotron{
     background-color:#1d1f20;
@@ -22,61 +17,39 @@ body {
 	width:400px;
 	outline-style:double;
 	margin-top:30px;
-	}
-
+}
 
 #footer{
 	margin-left:400px;
 	position:fixed;
-bottom:0;
+    bottom:0;
 }
 
-
-#box1{
-	margin-top:30px;
-	margin-left:160px;
-	height:420px;
-	width:390px;
-	background-color:#2f2f31;
-	outline-style:double;
-}
 .alert{
 	width:100%;
 	background-color:#2f2f31;
 	
 }
+
 #alertid{
 	height:100%;
 }
-
-li{
-	color:red;
-	text-align:left;
-	list-style-type:circle;
-	
-}
-
-
-
 
 .h5{
 	color:white;
 }
 h3{
-	
 	font-family:helvetica;
 }
 #results{
-	background-color:#2f2f31;
-	
-	
+	background-color:#000;
+    color: white;
+    font-family: Lucida Console;
 }
-
-
 
 #search{
 	background-color:#2f2f31;
-	color:white;\
+	color:white;
 	font-family:helvetica;
 }
 
@@ -84,12 +57,26 @@ h3{
 	color:black;
 	
 }
+.panel-heading{
+    background-color: #000;
+}
 
 
 #crawlerbox{
-	background-color:#2f2f31;
+	background-color:#000;
 }
 
 #button-center-pannel{
 	text-align:center; 
+}
+.panel{
+    background-color: #000;
+}
+.text-white{
+    padding-top: 10px;
+    color: #FFF;
+    font-family: Lucida Console;
+}
+#crawlerButton{
+    background-color:#2f2f31;
 }

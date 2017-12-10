@@ -10,7 +10,7 @@
 				$url = $_POST['input_value'];
 				include"crawlerMain.php";
 			}
-			?>
+	?>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>Injection Protection</title>
@@ -37,7 +37,7 @@
 		<!--Theme Responsive css-->
 		<link rel="stylesheet" href="../assets/css/responsive.css" />
 
-		<script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+		<script src="../assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
 <body>
 	<!--[if lt IE 8]>
@@ -56,7 +56,7 @@
 								<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 										</button>
-				<a class="navbar-brand" href="#"><img src="img1.jpg" width="50" height="50 "alt="Logo" style="margin-top:-14px;  margin-left:-232px;"					/></a>
+				<a class="navbar-brand" href="#"><img src="../assets/images/img1.jpg" width="50" height="50 "alt="Logo" style="margin-top:-14px;  margin-left:-232px;"					/></a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -76,9 +76,10 @@
 	<br></br><br>
 	<div class="container">
 		<div class="flex-row row">
-			<div class="col-md-6 flexcol-editor">
-				<div class="panel panel-default">
-					<h3 class="text-center" id="warning-text">Exploits found</h3>
+			<div class="col-md-12 flexcol-editor">
+				<div class="panel panel-default border">
+					<div class="panel-heading" id="button-center-pannel"><button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button></div>
+				    <h3 class="text-center text-white">Vulnerability Results</h3>
 					<div class="panel-body" id="results">
 						<h5> Results:</h5>
 						<p>
@@ -115,52 +116,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="col-md-6 flexcol-errors">
-
-				<div class="panel panel-default" id="crawlerbox">
-					<div class="panel-heading" id="button-center-pannel"><button type="button" class="btn btn-primary">Run Crawler</button></div>
-					<div class="panel-body">
-
-						<p>
-							<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-						</p>
-						<p>
-							<li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</li>
-						<p>
-							<li> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						</li>
-						<p>
-							<li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-						</li>
-						<p>
-							<li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						</li>
-						<p>
-							<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-						</p>
-						<p>
-							<li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</li>
-						<p>
-							<li> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						</li>
-						<p>
-							<li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-						</li>
-						<p>
-							<li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						</li>
-						<p>
-							<li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</li>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
 		<div class="col-md-4 flexcol-preview clearfix"></div>
 		<div class="col-md-4 flexcol-preview clearfix">
 			<div class="panel panel-default">
@@ -183,18 +138,18 @@
 							<div class="copyright">
 								<p1>Made </i> by <a target="_blank"> Injection Protection </a>2016. All rights reserved.</p1>
 							</div>
-						</div </div>
+						</div>
 					</div>
 				</div>
 		</footer>
 		<div class="scrollup">
 			<a href="#"><i class="fa fa-chevron-up"></i></a>
 		</div>
-		<script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
-		<script src="assets/js/vendor/bootstrap.min.js"></script>
-		<script src="assets/js/plugins.js"></script>
-		<script src="assets/js/modernizr.js"></script>
-		<script src="assets/js/main.js"></script>
+		<script src="../assets/js/vendor/jquery-1.11.2.min.js"></script>
+		<script src="../assets/js/vendor/bootstrap.min.js"></script>
+		<script src="../assets/js/plugins.js"></script>
+		<script src="../assets/js/modernizr.js"></script>
+		<script src="../assets/js/main.js"></script>
 </body>
 
 </html>
