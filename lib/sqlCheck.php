@@ -139,11 +139,10 @@ function sqlCheck($page, $sqlArray){
 	foreach($sqlArray as $elem){
 		$result = strpos($page, $elem);
 		if($result == false){
-			echo "Page is not vulnerable\n";
+			echo " ";
 		}
 		else{
-			echo "Page is vulnerable\n";
-			exit;
+			echo "<p><li>Page is vulnerable. The DBMS might be: ".$elem." </li></p>\n";
 		}
 	}
 }
@@ -151,7 +150,6 @@ function sqlCheck($page, $sqlArray){
 sqlCheck($data, $mySqlDB);
 sqlCheck($data, $postgreSQLDB);
 sqlCheck($data, $msSqlServerDB);
-sqlCheck($data, $msAccessDB);
 sqlCheck($data, $oracleDB);
 sqlCheck($data, $ibmDB2);
 sqlCheck($data, $informixDB);

@@ -8,7 +8,7 @@
 	<?php
 			if(isset($_POST['submit'])){
 				$url = $_POST['input_value'];
-				 $startUrl = $url;
+				$startUrl = $url;
 				echo $startUrl;
 				
 			}
@@ -80,7 +80,11 @@
 		<div class="flex-row row">
 			<div class="col-md-12 flexcol-editor">
 				<div class="panel panel-default border">
-					<div class="panel-heading" id="button-center-pannel"><button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button></div>
+                    <div class="panel-heading" id="button-center-pannel">
+                        <form action="crawlerMain.php" method="get">
+                            <button id="crawlerButton" type="button" class="btn btn-primary">Run Crawler</button>
+                        </form>
+                    </div>
 				    <h3 class="text-center text-white">Vulnerability Results</h3>
 					<div class="panel-body" id="results">
 						<h5> Results:</h5>
