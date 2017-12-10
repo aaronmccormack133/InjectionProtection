@@ -128,95 +128,61 @@ while($row = mysql_fetch_assoc($result)){
         echo $key . ": " . $val . "<BR />";
     }		
 */
-
-						
-					
 				//	echo $appendUrl."\r\n";
-					
-
 					//	foreach($mySqlDB AS $error){
-							
-
-
 					//	}
-					
-					
-				
-					
-
-					
-				
-				
-
-$result = $DBcon->query("SELECT * from link");
-    if ($result->num_rows > 0) {
+	$result = $DBcon->query("SELECT * from link");
+if ($result->num_rows > 0) {
         // output data of each row
-        while($row = $result->fetch_assoc()) {
-            $appendUrl = $row["links"]."'";
-						
-						global $appendUrl;
-					
-						
-curl_setopt($ch, CURLOPT_URL, $appendUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-$data = curl_exec($ch);
-					
-sqlCheck($data, $mySqlDB);
-sqlCheck($data, $postgreSQLDB);
-sqlCheck($data, $msSqlServerDB);
+    while($row = $result->fetch_assoc()) {
+       $appendUrl = $row["links"]."'";
 
-					sqlCheck($data, $mySqlDB);
-sqlCheck($data, $postgreSQLDB);
-sqlCheck($data, $msSqlServerDB);
-sqlCheck($data, $oracleDB);
-sqlCheck($data, $ibmDB2);
-sqlCheck($data, $informixDB);
-sqlCheck($data, $firebirdDB);
-sqlCheck($data, $SQLiteDB);
-sqlCheck($data, $SAPMaxDB);
-sqlCheck($data, $sybaseDB);
-sqlCheck($data, $ingresDB);
-sqlCheck($data, $frontbaseDB);
-sqlCheck($data, $hsqlDB);
-					if($data === FALSE){
-	echo "curl error " . curl_error($ch);
-}
-            }
-			
-        
-    } 
-else {
-        echo "errr";
-        } 
+       curl_setopt($ch, CURLOPT_URL, $appendUrl);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+       curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+       curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+       $data = curl_exec($ch);
+                           
+       sqlCheck($data, $mySqlDB);
+       sqlCheck($data, $postgreSQLDB);
+       sqlCheck($data, $msSqlServerDB);
+       sqlCheck($data, $mySqlDB);
+       sqlCheck($data, $postgreSQLDB);
+       sqlCheck($data, $msSqlServerDB);
+       sqlCheck($data, $oracleDB);
+       sqlCheck($data, $ibmDB2);
+       sqlCheck($data, $informixDB);
+       sqlCheck($data, $firebirdDB);
+       sqlCheck($data, $SQLiteDB);
+       sqlCheck($data, $SAPMaxDB);
+       sqlCheck($data, $sybaseDB);
+       sqlCheck($data, $ingresDB);
+       sqlCheck($data, $frontbaseDB);
+       sqlCheck($data, $hsqlDB);
+       if($data === FALSE){
+	        echo "curl error " . curl_error($ch);
+        }
+    }
+} 
+else{
+    echo "errr";
+} 
 function sqlCheck($page, $sqlArray){
+    global $appendUrl;
 	foreach($sqlArray as $elem){
-			$result = strpos($page, $elem);
+	    $result = strpos($page, $elem);
 		if($result == true){
-			echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
-			require("dbConfig.php");
-				$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$appendUrl."')";
-					$DBcon->query($sql);
-			
-					
-			
-			
+            echo "Page is vulnerable, The DBMS might be: ".$elem."\n";
+            global $Dbcon;
+			$sql = "INSERT INTO vulnerableLinks (url) VALUES ('".$appendUrl."')";
+			$DBcon->query($sql);
 		}
 		else{
-	$noError = true;
+	        $noError = true;
 		}
 	}
 }
-
-
-    
-		
-					
-
-
 /*
-
 sqlCheck($data, $mySqlDB);
 sqlCheck($data, $postgreSQLDB);
 sqlCheck($data, $msSqlServerDB);
