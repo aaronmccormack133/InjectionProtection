@@ -111,19 +111,16 @@
                                     <div class="row">
                                         <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
                                             <div class="home-contact">
-																							
-																						 <form class="form form-vertical" action="/lib/results.php" method="POST">
+                                                                                            
+                                                                                         <form class="form form-vertical" action="lib/results.php" method="POST">
                                                <div class="input-group">
                                                     <input type="text" class="form-control" placeholder="Enter your website URL" name="input_value"></input>
-																							 			<input type="submit" class="form-control" name="submit" onclick="clearform()" ></input>
-																							</div>
-																						</form>
-																								<p><?php
-																									include('urlSubmit.php');
-																										$starturl =$1;
-																									?></p>	
-																				
-																			</p>
+                                                                                                        <input type="submit" class="form-control" name="submit" onclick="clearform()" ></input>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                                <p></p> 
+                                                                                
+                                                                            </p>
 
                                             </div>
                                         </div>
@@ -134,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-                </div>			
+                </div>          
             </div>
         </header>
 
@@ -142,17 +139,17 @@
         <section id="features" class="features sections">
             
                             <div class="container">
-	<div class="row">
-		<div id="container1"></div>
-		<div class ="col-sm-6 col-md-6"></div>
-		<div class ="col-sm-6 col-md-6"></div>
-		<div class ="col-sm-6 col-md-6"></div>
-		<div class ="col-sm-6 col-md-6"></div>
-	</div>
-	
-	<script type="text/javascript">
-	
-	Highcharts.chart('container1', {
+    <div class="row">
+        <div id="container1"></div>
+        <div class ="col-sm-6 col-md-6"></div>
+        <div class ="col-sm-6 col-md-6"></div>
+        <div class ="col-sm-6 col-md-6"></div>
+        <div class ="col-sm-6 col-md-6"></div>
+    </div>
+    
+    <script type="text/javascript">
+    
+    Highcharts.chart('container1', {
 
     title: {
         text: 'Solar Employment Growth by Sector, 2010-2016'
@@ -215,8 +212,8 @@
     }
 
 });
-	
-	</script>
+    
+    </script>
                         
  
 
@@ -495,9 +492,9 @@
             <a href="#"><i class="fa fa-chevron-up"></i></a>
         </div>
 
-		<script src="js/scripts.js"></script>
-		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
         <script src="assets/js/vendor/bootstrap.min.js"></script>
         <script src="assets/js/plugins.js"></script>
